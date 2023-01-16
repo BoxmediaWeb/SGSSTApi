@@ -30,20 +30,22 @@ getDetalleDocumentos = async(req, res, next) =>{
     /*Filtros de la tabla detalleDocumentos*/
 
     try{
-
+        mainStatementMaestro.where = await whereStatementMaestro;
+        console.log("Este es el mainStateMentMaestro =>", mainStatementMaestro);
         const maestroDocumento = await MaestroDocumento.findAll(mainStatementMaestro);
 
         if(req.query.index){
             mainStatement.include=[MaestroDocumento];
-            const maestroSeleccionado = await maestroDocumento[req.query.index];
+            const maestroSeleccionado = await maestroDocumento[parseInt(req.query.index)];
             whereStatement.maestroId=maestroSeleccionado.id;
         }else{
             mainStatement.include=[{model:MaestroDocumento,where:{ubicacion:req.query.ubicacion}}];
         }
 
 
+
         mainStatement.where= await whereStatement;
-        mainStatementMaestro.where = await whereStatementMaestro;
+        
 
         const detalleDocumento = await DetalleDocumento.findAndCountAll(mainStatement);
         res.json(detalleDocumento);
@@ -84,6 +86,18 @@ generarStringrRandom=(length) => {
     }
     return result;
   }
+
+
+  uploadDetalleDocumento=async(req, res, next)=>{
+
+    try {
+        
+    }catch (error) {
+        res.send(error);
+    }
+
+  }
+
 
 setArchivoDocumento=async(req, res, next) =>{
     try {
@@ -174,19 +188,61 @@ getDetalleDocumento=async(req, res, next)=>{
 
 setDetalleDocumento=async(req, res, next)=>{
     try{
-        const usuarioActualizado = await DetalleDocumento.update(
+        if (req.query.eliminar) {
+            const detalleDocumento = await DetalleDocumento.findByPk(parseInt(req.params.id));
+        
+            await fs.unlink(`./public/detalleDocumentos/${detalleDocumento.ubicacion}`, (err) => {
+                if (err) {
+                    console.error(err)
+                    return
+                }
+            });
+        }
+
+        const detalleDocumento = await DetalleDocumento.update(
             req.body,
             {
                 where:{
-                    id:req.params.id
+                    id:parseInt(req.params.id)
                 }
             }
         );
-        res.json(usuarioActualizado);
+        res.json(detalleDocumento);
     }catch(error){
         res.send(error);
     }
 }
+
+
+createDetalleDocumentoMatriz = async(req, res, next)=>{
+    try{
+        const maestroDocumento = await MaestroDocumento.findAll({
+            where:{
+                ubicacion:req.body.nombreEstandar
+            }
+        });
+
+        const idMaestroDocumento = maestroDocumento[req.body.indexEstandar].id;
+        const ubicacionMaestro = maestroDocumento[req.body.indexEstandar].ubicacion;
+
+        const dataDetalleDocumento = {
+            fecha:req.body.fecha,
+            maestroId:idMaestroDocumento,
+            version:req.body.version,
+            comentario:req.body.comentario,
+            usuario:req.body.usuario,
+            estado:req.body.estado,
+            ubicacion:req.body.enlace
+        }
+
+        const detalleDocumento = await DetalleDocumento.create(dataDetalleDocumento);
+
+        res.json(detalleDocumento);
+    }catch(error){
+        res.send(error);
+    }
+}
+
 
 createDetalleDocumento = async(req, res, next)=>{
     try{
@@ -250,4 +306,13 @@ deleteDetalleDocumento=async(req, res, next)=>{
     }
 }
 
-module.exports = {getDetalleDocumentos,getDetalleDocumento,createDetalleDocumento,setDetalleDocumento,deleteDetalleDocumento,getDetalleDocumentosDoc,setArchivoDocumento,getArchivoDocumento};
+uploadDetalleDocumento=async(req, res, next)=>{
+    try {
+        res.json({mensaje:"Detalle Documento guardado"});
+    } catch (error) {
+        res.json(error);
+    }
+}
+
+
+module.exports = {getDetalleDocumentos,getDetalleDocumento,createDetalleDocumento,setDetalleDocumento,deleteDetalleDocumento,getDetalleDocumentosDoc,setArchivoDocumento,getArchivoDocumento,uploadDetalleDocumento,createDetalleDocumentoMatriz};
