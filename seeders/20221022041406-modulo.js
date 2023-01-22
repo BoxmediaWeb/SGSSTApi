@@ -88,8 +88,23 @@ module.exports = {
         icon : 'clipboard-list',
         link : '/maestros',
         parent: 'Configuracion'
+      },
+      {
+        //id   : 'maestros',
+        title: 'Estandar',
+        type : 'collapsable',
+        icon : 'clipboard-list',
+        link : null,
+        parent: null
+      },
+      {
+        //id   : 'maestros',
+        title: 'est',
+        type : 'basic',
+        icon : 'clipboard-list',
+        link : "sgsst",
+        parent: 'Estandar'
       }
-
     ],{});
 
 

@@ -48,6 +48,14 @@ module.exports = {
       {
         roleId: 1,
         moduloId: 11
+      },
+      {
+        roleId: 1,
+        moduloId: 12
+      },
+      {
+        roleId: 1,
+        moduloId: 13
       }
   ],{});
 
