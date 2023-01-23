@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     fecha: DataTypes.STRING,
     maestroId: DataTypes.INTEGER,
     version: DataTypes.INTEGER,
+    vigencia: DataTypes.STRING,
     ubicacion: DataTypes.STRING,
     comentario: DataTypes.STRING,
     usuario: DataTypes.STRING,

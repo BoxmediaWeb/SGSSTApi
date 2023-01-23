@@ -33,6 +33,9 @@ module.exports = {
       ubicacion: {
         type: Sequelize.STRING
       },
+      archivo: {
+        type: Sequelize.STRING
+      },
       tipoDocumento: {
         type: Sequelize.STRING
       },

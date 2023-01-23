@@ -79,31 +79,44 @@ deleteMaestroDocumento=async(req, res, next)=>{
     }
 }
 
+//Elementos corregido
+
 setArchivoMaestro=async(req, res, next)=>{
+    var nombreArchivo = `${req.body.maestroId}_${generarStringrRandom(10)}.txt`;
+    var createStream = await fs.createWriteStream(nombreArchivo);
+    await createStream.end();
+    const item = await MaestroDocumento.update({archivo:nombreArchivo},{where:{id:req.body.maestroId}});
 
-        var nombreArchivo = req.body.estandar+".html";
-        var createStream = fs.createWriteStream(nombreArchivo);
-        createStream.end();
-
-        fs.writeFile("./public/maetroDocumentos/"+nombreArchivo, req.body.valor, function(err) {
-            if(err) {
-                res.send(err);
-            }else{
-                res.json({
-                    "mensaje":"Archivo subido"
-                });
-            }
-        });
+    await fs.writeFile(`./public/maetroDocumentos/${nombreArchivo}`, req.body.contenido, function(err) {
+        if(err) {
+            res.send(err);
+        }else{
+            res.json({
+                "mensaje":"Archivo subido"
+            });
+        }
+    });
 }
 
-
 getArchivoMaestro=async(req, res, next)=>{
-    var nombreArchivo = `./public/maetroDocumentos/${req.query.estandar}.html`;
-    await fs.readFile(nombreArchivo, "utf8", function(err, data) {
+    const item = await MaestroDocumento.findByPk(req.query.maestroId);
+    var nombreArchivo = `./public/maetroDocumentos/${item.archivo}`;
+
+    await fs.readFile(nombreArchivo, "utf8", function(err, contenido) {
         res.json({
-            "mensaje":data
+            "contenido":contenido
         }); 
     });
+}
+
+generarStringrRandom=(length) => {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
 }
 
 module.exports = {getMaestroDocumentos,getMaestroDocumento,createMaestroDocumento,setMaestroDocumento,deleteMaestroDocumento,setArchivoMaestro,getArchivoMaestro};

@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     nombre: DataTypes.STRING,
     nombreCorto: DataTypes.STRING,
     ubicacion: DataTypes.STRING,
+    archivo: DataTypes.STRING,
     tipoDocumento: DataTypes.STRING,
     enlaceModelo: DataTypes.STRING,
     sistema: DataTypes.STRING,

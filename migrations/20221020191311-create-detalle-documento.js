@@ -33,6 +33,9 @@ module.exports = {
       usuario: {
         type: Sequelize.STRING
       },
+      vigencia: {
+        type: Sequelize.STRING
+      },
       estado: {
         type: Sequelize.STRING
       },

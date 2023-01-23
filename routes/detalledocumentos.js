@@ -58,14 +58,14 @@ editarCampoUbicacion=async(body,nombreArchivo)=>{
 }
 
 
-router.get('/', detalleDocumentoController.getDetalleDocumentos);
-router.post('/matriz', detalleDocumentoController.createDetalleDocumentoMatriz);
+router.get('/', detalleDocumentoController.obtenerItems);
+router.post('/matriz', detalleDocumentoController.crearItemMatriz);
 router.post('/upload',uploadDetalleDocumento().single('archivoDetalleDocumento'), detalleDocumentoController.uploadDetalleDocumento);
 router.post('/setdetalledocumento', detalleDocumentoController.setArchivoDocumento);
 router.get('/getdetalledocumento', detalleDocumentoController.getArchivoDocumento);
 router.get('/:id', detalleDocumentoController.getDetalleDocumento);
 router.post('/:id', detalleDocumentoController.setDetalleDocumento);
-router.post('/', detalleDocumentoController.createDetalleDocumento);
+router.post('/', detalleDocumentoController.crearItem);
 router.delete('/:id', detalleDocumentoController.deleteDetalleDocumento);
 //imgAvatar
 
