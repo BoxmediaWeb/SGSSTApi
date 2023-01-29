@@ -2,29 +2,23 @@ var express = require('express');
 var multer = require('multer');
 const fs = require('fs');
 const models = require('../models');
-
 var router = express.Router();
 const detalleDocumentoController = require('../controllers/detalleDocumentoController');
-
 const DetalleDocumento = models.DetalleDocumento;
 
 uploadDetalleDocumento = () =>{
+
     const storage = multer.diskStorage({
-        destination:(req,file,cb)=>{
-            const ruta = "./public/detalleDocumentos";
-            const path = `${ruta}/${req.body.ubicacion}`;
-
-            fs.unlink(path, (err) => {if (err) {
-                console.error('No existe el archivo',err)
-                }
-            })
-
+        destination:async(req,file,cb)=>{
+            await console.log("req.body ===>", req.body.documentoId);
+            const ruta = await "./public/detalleDocumentos";
+            const path = await `${ruta}/${req.body.documentoId}`;
             cb(null, ruta)
         },
-        filename:(req,file,cb)=>{
-            const ext = file.originalname.split('.').pop();
-            var archivo=`${req.body.estandar}_${genRandonString(20)}.${ext}`;
-            editarCampoUbicacion(req.body,archivo);
+        filename:async(req,file,cb)=>{
+            const ext = await file.originalname.split('.').pop();
+            var archivo= await `${req.body.documentoId}_${genRandonString(10)}.${ext}`;
+            await editarCampoUbicacion(req.body,archivo);
             cb(null,archivo)
         }
     });
@@ -43,7 +37,10 @@ genRandonString = (length)=>{
 }
 
 editarCampoUbicacion=async(body,nombreArchivo)=>{
-    await DetalleDocumento.update(
+
+    console.log("body.version", body.version);
+
+    const documentoSeleccionado = await DetalleDocumento.update(
         {
             ubicacion:nombreArchivo,
             version:body.version,
@@ -52,15 +49,18 @@ editarCampoUbicacion=async(body,nombreArchivo)=>{
         },
         {
           where: {
-            id:body.detalleDocumentoId
-            },
+            id:body.documentoId
+            }
         });
+    
+        await console.log("DetalleDocumentoSeleccionado=>", documentoSeleccionado);
 }
 
 
 router.get('/', detalleDocumentoController.obtenerItems);
+router.get('/limpiardocumento/:id', detalleDocumentoController.limpiarDocumento);
 router.post('/matriz', detalleDocumentoController.crearItemMatriz);
-router.post('/upload',uploadDetalleDocumento().single('archivoDetalleDocumento'), detalleDocumentoController.uploadDetalleDocumento);
+router.post('/upload',uploadDetalleDocumento().single('archivoDocumento'), detalleDocumentoController.uploadDetalleDocumento);
 router.post('/setdetalledocumento', detalleDocumentoController.setArchivoDocumento);
 router.get('/getdetalledocumento', detalleDocumentoController.getArchivoDocumento);
 router.get('/:id', detalleDocumentoController.getDetalleDocumento);

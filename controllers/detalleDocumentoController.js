@@ -139,6 +139,32 @@ setDetalleDocumento=async(req, res, next)=>{
     }
 }
 
+
+/*Modificado*/
+
+limpiarDocumento=async(req, res, next)=>{
+    try {
+        console.log("Pase por limpiar documento",req.params);
+        const detalleDocumentoActualizado = await DetalleDocumento.update(
+            {
+                fecha:null,
+                version:null,
+                ubicacion:null,
+                comentario:null,
+                estado:null
+            },
+            {
+                where:{
+                    id:parseInt(req.params.id)
+                }
+            }
+        );
+        res.json(detalleDocumentoActualizado);
+    } catch (error) {
+        res.send(error);
+    }
+}
+
 uploadDetalleDocumento=async(req, res, next)=>{
     try {
         res.json({mensaje:"Detalle Documento guardado"});
@@ -146,8 +172,6 @@ uploadDetalleDocumento=async(req, res, next)=>{
         res.json(error);
     }
 }
-
-/*Modificado*/
 
 crearItemMatriz = async(req, res, next)=>{
     try{
@@ -244,4 +268,4 @@ crearItem=async(req, res)=>{
     }
 }
 
-module.exports = {getDetalleDocumento,setDetalleDocumento,deleteDetalleDocumento,getDetalleDocumentosDoc,setArchivoDocumento,getArchivoDocumento,uploadDetalleDocumento,crearItemMatriz,obtenerItems,crearItem};
+module.exports = {getDetalleDocumento,setDetalleDocumento,deleteDetalleDocumento,getDetalleDocumentosDoc,setArchivoDocumento,getArchivoDocumento,uploadDetalleDocumento,crearItemMatriz,obtenerItems,crearItem,limpiarDocumento};

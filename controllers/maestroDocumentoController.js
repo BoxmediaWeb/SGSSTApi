@@ -3,30 +3,6 @@ const { Op } = require("sequelize");
 const MaestroDocumento = models.MaestroDocumento;
 const fs = require('fs');
 
-getMaestroDocumentos = async(req, res, next) =>{
-
-    try{
-
-        var mainStatement = {};
-        var whereStatement = {};
-    
-        if(req.query.ubicacion){
-            whereStatement.ubicacion=req.query.ubicacion;
-        }
-
-        if(req.query.tipoDocumento){
-            whereStatement.tipoDocumento=req.query.tipoDocumento
-        }
-    
-        mainStatement.where = whereStatement;
-
-        const maestroDocumentos = await MaestroDocumento.findAll(mainStatement);
-        res.json(maestroDocumentos);
-    }catch(error){
-        res.send(error);
-    }
-
-}
 
 getMaestroDocumento=async(req, res, next)=>{
     try{
@@ -80,6 +56,32 @@ deleteMaestroDocumento=async(req, res, next)=>{
 }
 
 //Elementos corregido
+
+
+getMaestroDocumentos = async(req, res, next) =>{
+
+    try{
+
+        var mainStatement = {};
+        var whereStatement = {};
+    
+        if(req.query.ubicacion){
+            whereStatement.ubicacion=req.query.ubicacion;
+        }
+
+        if(req.query.tipoDocumento){
+            whereStatement.tipoDocumento=req.query.tipoDocumento
+        }
+    
+        mainStatement.where = whereStatement;
+
+        const maestroDocumentos = await MaestroDocumento.findAll(mainStatement);
+        res.json(maestroDocumentos);
+    }catch(error){
+        res.send(error);
+    }
+
+}
 
 setArchivoMaestro=async(req, res, next)=>{
     var nombreArchivo = `${req.body.maestroId}_${generarStringrRandom(10)}.txt`;
