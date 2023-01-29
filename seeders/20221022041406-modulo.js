@@ -18,14 +18,13 @@ module.exports = {
         title   : 'sgsst',
         type    : 'collapsable',
         icon    : 'archive',
-        link    : '/apps/help-center',
       },
       {
         //id   : 'planear',
         title: 'Planear',
         type : 'basic',
         icon : 'chart-bar',
-        link : '/estandar/planear',
+        link : '/sgsst/planear',
         parent : 'sgsst'
       },
       {
@@ -33,7 +32,7 @@ module.exports = {
         title: 'Hacer',
         type : 'basic',
         icon : 'pencil-alt',
-        link : '/estandar/hacer',
+        link : '/sgsst/hacer',
         parent : 'sgsst'
       },
       {
@@ -41,7 +40,7 @@ module.exports = {
         title: 'Verificar',
         type : 'basic',
         icon : 'clipboard-list',
-        link : '/estandar/verificar',
+        link : '/sgsst/verificar',
         parent : 'sgsst'
       },
       {
@@ -49,7 +48,7 @@ module.exports = {
         title: 'Actuar',
         type : 'basic',
         icon : 'presentation-chart-bar',
-        link : '/estandar/actuar',
+        link : '/sgsst/actuar',
         parent : 'sgsst'
       },
       {
@@ -88,22 +87,6 @@ module.exports = {
         icon : 'clipboard-list',
         link : '/maestros',
         parent: 'Configuracion'
-      },
-      {
-        //id   : 'maestros',
-        title: 'Estandar',
-        type : 'collapsable',
-        icon : 'clipboard-list',
-        link : null,
-        parent: null
-      },
-      {
-        //id   : 'maestros',
-        title: 'est',
-        type : 'basic',
-        icon : 'clipboard-list',
-        link : "sgsst",
-        parent: 'Estandar'
       }
     ],{});
 

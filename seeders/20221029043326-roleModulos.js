@@ -4,62 +4,24 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     
-    await queryInterface.bulkInsert('RoleModulos', [
-      {
-        roleId: 1,
-        moduloId: 1
-      },
-      {
-        roleId: 1,
-        moduloId: 2
-      },
-      {
-        roleId: 1,
-        moduloId: 3
-      },
-      {
-        roleId: 1,
-        moduloId: 4
-      },
-      {
-        roleId: 1,
-        moduloId: 5
-      },
-      {
-        roleId: 1,
-        moduloId: 6
-      },
-      {
-        roleId: 1,
-        moduloId: 7
-      },
-      {
-        roleId: 1,
-        moduloId: 8
-      },
-      {
-        roleId: 1,
-        moduloId: 9
-      },
-      {
-        roleId: 1,
-        moduloId: 10
-      },
-      {
-        roleId: 1,
-        moduloId: 11
-      },
-      {
-        roleId: 1,
-        moduloId: 12
-      },
-      {
-        roleId: 1,
-        moduloId: 13
-      }
-  ],{});
+    let roleModulos;
 
+    await queryInterface.sequelize.query(
+      'SELECT * FROM Modulos', {
+        replacements: ['active'],
+        type: queryInterface.sequelize.QueryTypes.SELECT
+      }).then(modulos => {
 
+        roleModulos=modulos.map((data)=>{
+          return ({
+            roleId:1,
+            moduloId:data.id
+          })
+        });
+
+      });
+
+    await queryInterface.bulkInsert('RoleModulos', roleModulos,{});
   },
 
   async down (queryInterface, Sequelize) {
